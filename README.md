@@ -1,0 +1,69 @@
+# DermClose AI
+
+Benefit-aware prescribing assistant for **Harbor Dermatology**, built on Photon.
+
+Clinicians ask whether a medication will be covered *before* an order goes out, then manage fulfillment exceptions and refill noise in one inbox.
+
+**Run:** copy `.env.example` → `.env.local`, set `PHOTON_ACCESS_TOKEN`, then `npm install && npm run dev` → [http://localhost:3000](http://localhost:3000)
+
+---
+
+## Product sections & use cases
+
+### 1. Prescribing assistant (home)
+
+**Use case:** At visit close, the clinician asks about coverage for a derm medication and gets a recommendation plus optional drafts before anything is sent to a pharmacy.
+
+**What you do**
+- `@`-mention a patient (age / DOB / city — id stays behind the scenes)
+- Ask about coverage or paste a visit note
+- Review proposed drafts (requested + plan alternatives), then sign in Photon Elements
+
+**Demo prompts**
+- Covered: `Can we cover Adapalene for @Maya?`
+- Restricted / PA path: `Can we cover Victoza for @Jordan?`
+- Clinical hold: **Hold path** chip (Accutane / isotretinoin)
+
+**Why it exists (clinician pain):** Doctors often learn about prior auth and coverage only after the pharmacy rejects the Rx.
+
+- [I just did my first prior auth today](https://www.reddit.com/r/medicine/comments/1fepsi4/i_just_did_my_first_prior_auth_today_our_system/) — pharmacy bounce → clinic PA work → hours lost  
+- [Prior authorization; or How I Became Radicalized](https://www.reddit.com/r/medicine/comments/1ufj0dp/prior_authorization_or_how_i_became_radicalized/) — full day on a denial that was already documented  
+
+---
+
+### 2. Clinic inbox → Problematic orders
+
+**Use case:** After a prescription leaves the clinic, something breaks — out of stock, PA required, diagnosis flag, stuck routing, not covered. The inbox surfaces the problem and proposes a resolution (reroute, switch med, clarify, send-to-patient).
+
+**What you do**
+- Open **Inbox** in the doctor nav
+- Expand **Problematic orders**
+- Search / filter by severity or reason
+- Accept the AI proposal or an alternate; or dismiss
+
+**Why it exists (clinician pain):** Offices drown in faxes and calls when pharmacies can’t fill or need clarification.
+
+- [Retail pharmacy and doc office communication issues](https://www.reddit.com/r/medicine/comments/11z3wrf/retail_pharmacy_and_doc_office_communication/) — fax/EMR noise vs clear “not covered / needs PA”  
+- [Pharmacist denied fill due to diagnosis](https://www.reddit.com/r/medicine/comments/1dkx85y/pharmacist_denied_fill_due_to_diagnosis_is_this/) — fill blocked on a clinical flag; patient bounced  
+
+---
+
+### 3. Clinic inbox → Refill requests
+
+**Use case:** Refill faxes and auto-requests pile up. The inbox auto-triages into approve / bridge / needs clinician (overdue visit, Accutane, early auto-refill spam).
+
+**What you do**
+- Expand **Refill requests** (stacked under orders; both sections collapse)
+- Search / filter by severity or triage type
+- One-click accept the proposed action
+
+**Why it exists (clinician pain):** Pharmacies and portals generate refill volume that isn’t always patient-driven or clinically appropriate.
+
+- [Refills not automatically honored](https://www.reddit.com/r/medicine/comments/159fwo3/refills_not_automatically_honored/) — fax attrition on refills and “confirm you meant this”  
+- [CVS repeatedly tries to refill meds neither patient nor provider asked for](https://www.reddit.com/r/FamilyMedicine/comments/1hwpona/cvs_repeatedly_tries_to_refill_meds_neither/) — auto-outreach refill spam  
+
+---
+
+## Inbox demo data
+
+**Refresh demo data** on `/inbox` reseeds ~60 derm scenarios (order exceptions + refill requests) tied to your Photon patients where possible — enough volume to exercise search, filters, collapse, and resolve flows.
