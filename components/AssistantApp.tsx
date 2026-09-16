@@ -410,7 +410,7 @@ export function AssistantApp() {
       <RoleNav role="doctor" doctorTab="assistant" inboxCount={inboxCount} />
 
       <div className="mx-auto grid max-w-6xl gap-6 px-6 py-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)] lg:items-start">
-        <section className="flex h-[min(70vh,720px)] min-h-0 flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
+        <section className="flex h-[min(92vh,calc(100dvh-6.5rem))] min-h-0 flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
           <div className="shrink-0 border-b border-black/10 px-5 py-4">
             <p className="text-xs uppercase tracking-[0.18em] text-clay">MCP assistant</p>
             <h1 className="font-serif text-2xl text-ink">Ask before you prescribe</h1>
