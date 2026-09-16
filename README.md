@@ -4,7 +4,25 @@ Benefit-aware prescribing assistant for **Harbor Dermatology**, built on Photon.
 
 Clinicians ask whether a medication will be covered *before* an order goes out, then manage fulfillment exceptions and refill noise in one inbox.
 
-**Run:** copy `.env.example` → `.env.local`, set `PHOTON_ACCESS_TOKEN`, then `npm install && npm run dev` → [http://localhost:3000](http://localhost:3000)
+## Setup
+
+Secrets are **not** in this repo. Create a local env file before running:
+
+1. Copy the example file:
+   ```bash
+   cp .env.example .env.local
+   ```
+2. Open `.env.local` and set `PHOTON_ACCESS_TOKEN` to your Neutron sandbox user access token (from [app.neutron.health](https://app.neutron.health) — Network tab or a logged-in session).
+3. Leave the `NEXT_PUBLIC_PHOTON_*` values as in `.env.example` (SPA client/org for Elements), or replace them with your own Photon sandbox credentials.
+4. Optional: add `OPENAI_API_KEY` for freer LLM replies. Without it, the deterministic assistant still works.
+5. Install and run:
+   ```bash
+   npm install
+   npm run dev
+   ```
+6. Open [http://localhost:3000](http://localhost:3000)
+
+**Do not commit `.env.local`.** It is gitignored. Never paste real tokens into the README or git history.
 
 ---
 
