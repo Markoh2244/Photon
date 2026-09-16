@@ -43,9 +43,6 @@ Clinicians ask whether a medication will be covered *before* an order goes out, 
 
 **Why it exists (clinician pain):** Offices drown in faxes and calls when pharmacies can’t fill or need clarification.
 
-- [Retail pharmacy and doc office communication issues](https://www.reddit.com/r/medicine/comments/11z3wrf/retail_pharmacy_and_doc_office_communication/) — fax/EMR noise vs clear “not covered / needs PA”  
-- [Pharmacist denied fill due to diagnosis](https://www.reddit.com/r/medicine/comments/1dkx85y/pharmacist_denied_fill_due_to_diagnosis_is_this/) — fill blocked on a clinical flag; patient bounced  
-
 ---
 
 ### 3. Clinic inbox → Refill requests
