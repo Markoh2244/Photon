@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { PreferredPharmacy, ReviewSummary } from "@/lib/community";
 import type { PhotonPharmacy } from "@/lib/photon";
-import { Card, Stars, Tag } from "@/components/ui";
+import { Card, ConfirmDialog, Stars, Tag } from "@/components/ui";
 
 const NYC = { lat: 40.731, lng: -73.989 };
 
@@ -61,6 +61,7 @@ export function PreferredPharmacyPicker({
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const load = useCallback(async (fulfillment: "PICK_UP" | "MAIL_ORDER") => {
     setError(null);
@@ -108,12 +109,18 @@ export function PreferredPharmacyPicker({
       });
       const json = await response.json();
       if (!response.ok) throw new Error(json.error || "Could not save");
+      setConfirmOpen(false);
       await onSaved();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save");
     } finally {
       setBusy(false);
     }
+  }
+
+  function requestSave() {
+    if (!selected || !reason.trim()) return;
+    setConfirmOpen(true);
   }
 
   async function clear() {
@@ -202,7 +209,7 @@ export function PreferredPharmacyPicker({
         <button
           className="rounded-lg bg-ink px-4 py-2 text-sm text-white disabled:opacity-40"
           disabled={busy || !selected || !reason.trim()}
-          onClick={save}
+          onClick={requestSave}
         >
           {preferred ? "Update recommendation" : "Save recommendation"}
         </button>
@@ -219,6 +226,20 @@ export function PreferredPharmacyPicker({
           {new Date(preferred.createdAt).toLocaleString()}.
         </p>
       )}
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title={preferred ? "Change preferred pharmacy?" : "Save preferred pharmacy?"}
+        message={
+          preferred
+            ? `Switch this patient’s recommendation from ${preferred.pharmacyName} to ${selected?.name || "the selected pharmacy"}? The patient can still choose a different pharmacy.`
+            : `Recommend ${selected?.name || "this pharmacy"} for ${patientName.split(" ")[0]}? The patient can still choose a different pharmacy.`
+        }
+        confirmLabel={preferred ? "Change pharmacy" : "Save recommendation"}
+        busy={busy}
+        onConfirm={save}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </Card>
   );
 }

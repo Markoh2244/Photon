@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { RoleNav } from "@/components/ui";
+import { ConfirmDialog, RoleNav } from "@/components/ui";
 import type {
   InboxItem,
   OrderExceptionItem,
@@ -127,9 +127,11 @@ function OrderCard({
   const [pharmacies, setPharmacies] = useState<PharmacyHit[]>([]);
   const [loadingPharmacies, setLoadingPharmacies] = useState(false);
   const [pharmacyError, setPharmacyError] = useState<string | null>(null);
+  const [pendingPharmacy, setPendingPharmacy] = useState<PharmacyHit | null>(null);
 
   async function openPharmacyPicker() {
     setPickerOpen(true);
+    setPendingPharmacy(null);
     setPharmacyError(null);
     setLoadingPharmacies(true);
     try {
@@ -143,6 +145,26 @@ function OrderCard({
     } finally {
       setLoadingPharmacies(false);
     }
+  }
+
+  function confirmPharmacyChange() {
+    if (!pendingPharmacy) return;
+    const pharmacy = pendingPharmacy;
+    const address = [
+      pharmacy.address?.street1,
+      pharmacy.address?.city,
+      pharmacy.address?.state,
+    ]
+      .filter(Boolean)
+      .join(", ");
+    onResolve(
+      item.id,
+      "act_find_pharmacy",
+      "accept",
+      `Rerouted to ${pharmacy.name}${address ? ` (${address})` : ""} [${pharmacy.id}]`,
+    );
+    setPendingPharmacy(null);
+    setPickerOpen(false);
   }
 
   return (
@@ -198,22 +220,7 @@ function OrderCard({
                   type="button"
                   disabled={busyId === item.id}
                   className="flex w-full flex-col rounded-lg border border-black/10 px-3 py-2 text-left text-sm hover:border-clay/40 hover:bg-mist/50 disabled:opacity-50"
-                  onClick={() => {
-                    const address = [
-                      pharmacy.address?.street1,
-                      pharmacy.address?.city,
-                      pharmacy.address?.state,
-                    ]
-                      .filter(Boolean)
-                      .join(", ");
-                    onResolve(
-                      item.id,
-                      "act_find_pharmacy",
-                      "accept",
-                      `Rerouted to ${pharmacy.name}${address ? ` (${address})` : ""} [${pharmacy.id}]`,
-                    );
-                    setPickerOpen(false);
-                  }}
+                  onClick={() => setPendingPharmacy(pharmacy)}
                 >
                   <span className="font-medium text-ink">{pharmacy.name}</span>
                   <span className="text-xs text-black/50">
@@ -228,6 +235,20 @@ function OrderCard({
           </ul>
         </div>
       )}
+
+      <ConfirmDialog
+        open={Boolean(pendingPharmacy)}
+        title="Change pharmacy?"
+        message={
+          item.pharmacyName
+            ? `Reroute ${item.medication} for ${item.patientName} from ${item.pharmacyName} to ${pendingPharmacy?.name || "the selected pharmacy"}?`
+            : `Route ${item.medication} for ${item.patientName} to ${pendingPharmacy?.name || "the selected pharmacy"}?`
+        }
+        confirmLabel="Change pharmacy"
+        busy={busyId === item.id}
+        onConfirm={confirmPharmacyChange}
+        onCancel={() => setPendingPharmacy(null)}
+      />
     </article>
   );
 }
