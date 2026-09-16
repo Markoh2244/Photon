@@ -409,9 +409,9 @@ export function AssistantApp() {
     <main className="min-h-screen">
       <RoleNav role="doctor" doctorTab="assistant" inboxCount={inboxCount} />
 
-      <div className="mx-auto grid max-w-6xl gap-6 px-6 py-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
-        <section className="flex min-h-[70vh] flex-col rounded-2xl border border-black/10 bg-white shadow-sm">
-          <div className="border-b border-black/10 px-5 py-4">
+      <div className="mx-auto grid max-w-6xl gap-6 px-6 py-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)] lg:items-start">
+        <section className="flex h-[min(70vh,720px)] min-h-0 flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
+          <div className="shrink-0 border-b border-black/10 px-5 py-4">
             <p className="text-xs uppercase tracking-[0.18em] text-clay">MCP assistant</p>
             <h1 className="font-serif text-2xl text-ink">Ask before you prescribe</h1>
             <p className="mt-1 text-sm text-black/60">
@@ -419,7 +419,7 @@ export function AssistantApp() {
             </p>
           </div>
 
-          <div className="flex-1 space-y-4 overflow-y-auto px-5 py-5">
+          <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-5">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -564,7 +564,7 @@ export function AssistantApp() {
             <div ref={bottomRef} />
           </div>
 
-          <div className="border-t border-black/10 px-5 py-4">
+          <div className="shrink-0 border-t border-black/10 px-5 py-4">
             <div className="mb-3 flex flex-wrap gap-2">
               {PROMPTS.map((prompt) => (
                 <button

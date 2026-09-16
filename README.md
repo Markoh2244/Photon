@@ -20,7 +20,7 @@ Secrets are **not** in this repo. Create a local env file before running:
    npm install
    npm run dev
    ```
-6. Open [http://localhost:3000](http://localhost:3000)
+6. Open [http://localhost:3000](http://localhost:3000) — you’ll hit a **demo sign-in** (email/password + 6-digit code). Use `clinician@harborderm.com` / `harbor123` / `424242`, then the assistant and inbox load. This is app-gate auth only; Photon Elements still uses Google SSO to actually sign a script.
 
 **Do not commit `.env.local`.** It is gitignored. Never paste real tokens into the README or git history.
 

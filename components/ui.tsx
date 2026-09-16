@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useAuth } from "@/components/AuthProvider";
 
 export function RoleNav({
   role,
@@ -9,6 +12,8 @@ export function RoleNav({
   doctorTab?: "assistant" | "inbox";
   inboxCount?: number;
 }) {
+  const { session, signOut } = useAuth();
+
   return (
     <header className="border-b border-black/10 bg-white">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
@@ -68,6 +73,20 @@ export function RoleNav({
               Patient view
             </Link>
           </nav>
+          {session && (
+            <div className="flex items-center gap-2 text-sm">
+              <span className="hidden max-w-[10rem] truncate text-black/45 sm:inline" title={session.email}>
+                {session.email}
+              </span>
+              <button
+                type="button"
+                onClick={signOut}
+                className="rounded-full border border-black/15 px-3 py-1.5 text-black/70 hover:border-clay hover:text-ink"
+              >
+                Sign out
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>
